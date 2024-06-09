@@ -4,7 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /***
  * This class implements all business logic.
@@ -16,10 +16,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Quest {
     private final List<Adventurer> adventurerList;
-    private final ConcurrentHashMap<Pair<Long, Long>, Ground> groundMap;
-    private final long questWidth, questHeight;
+    private final ConcurrentMap<Pair<Long, Long>, Ground> groundMap;
+    private final long questWidth;
+    private final long questHeight;
 
-    public Quest(List<Adventurer> adventurerList, ConcurrentHashMap<Pair<Long, Long>, Ground> groundMap,
+    public Quest(List<Adventurer> adventurerList, ConcurrentMap<Pair<Long, Long>, Ground> groundMap,
                  long questWidth, long questHeight) {
 
         this.adventurerList = adventurerList;
