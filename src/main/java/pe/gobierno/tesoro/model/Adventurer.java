@@ -1,5 +1,8 @@
 package pe.gobierno.tesoro.model;
 
+/***
+ * Representation of the adventurer
+ */
 public class Adventurer {
     private final long id;
     private final String name;
@@ -9,12 +12,11 @@ public class Adventurer {
     private long treasure;
     private String movementSequence;
 
-    public Adventurer(long id, String name, long posX, long posY, long treasure, String movementSequence, char orientation) {
+    public Adventurer(long id, String name, long posX, long posY, String movementSequence, char orientation) {
         this.id = id;
         this.name = name;
         this.posX = posX;
         this.posY = posY;
-        this.treasure = treasure;
         this.movementSequence = movementSequence;
         this.orientation = orientation;
     }
