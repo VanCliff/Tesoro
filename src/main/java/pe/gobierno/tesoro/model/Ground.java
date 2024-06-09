@@ -16,4 +16,11 @@ public class Ground {
         this(type, false);
     }
 
+    public boolean isAdventurerPresent() {
+        return isAdventurerPresent;
+    }
+
+    public GroundType getType() {
+        return type;
+    }
 }

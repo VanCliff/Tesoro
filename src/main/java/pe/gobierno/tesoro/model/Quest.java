@@ -17,11 +17,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Quest {
     private final List<Adventurer> adventurerList;
     private final ConcurrentHashMap<Pair<Long, Long>, Ground> groundMap;
-    private long questWidth, questHeight;
+    private final long questWidth, questHeight;
 
-    public Quest(List<Adventurer> adventurerList, ConcurrentHashMap<Pair<Long, Long>, Ground> groundMap) {
+    public Quest(List<Adventurer> adventurerList, ConcurrentHashMap<Pair<Long, Long>, Ground> groundMap,
+                 long questWidth, long questHeight) {
+
         this.adventurerList = adventurerList;
         this.groundMap = groundMap;
+        this.questWidth = questWidth;
+        this.questHeight= questHeight;
     }
 
     public List<Adventurer> getAdventurerList() {
@@ -30,5 +34,13 @@ public class Quest {
 
     public Map<Pair<Long, Long>, Ground> getGroundMap() {
         return groundMap;
+    }
+
+    public long getQuestWidth() {
+        return questWidth;
+    }
+
+    public long getQuestHeight() {
+        return questHeight;
     }
 }
