@@ -110,6 +110,10 @@ public class MapFileProcessorService {
             quest = validateTreasureInfo(listTreasureLines, quest.get());
         }
 
+        if(quest.isPresent()) {
+
+        }
+
         return quest;
 
     }
@@ -191,6 +195,7 @@ public class MapFileProcessorService {
                 && treasureOrdinate >= 0 && treasureOrdinate < quest.getQuestHeight()
                 && treasureNumber >= 0 ) {
 
+                // TODO : Doit être fait après avoir obtenus les aventuriers
                 Ground ground = new Ground(GroundType.TREASURE, false);
                 groundMap.putIfAbsent(Pair.of(treasureAbscissa, treasureOrdinate), ground);
             }
