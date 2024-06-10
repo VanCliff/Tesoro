@@ -15,19 +15,10 @@ import java.util.concurrent.ConcurrentMap;
  * - the size of the quest (i.e. the width/height)
  */
 public class Quest {
-    private final List<Adventurer> adventurerList;
-    private final ConcurrentMap<Pair<Long, Long>, Ground> groundMap;
-    private final long questWidth;
-    private final long questHeight;
-
-    public Quest(List<Adventurer> adventurerList, ConcurrentMap<Pair<Long, Long>, Ground> groundMap,
-                 long questWidth, long questHeight) {
-
-        this.adventurerList = adventurerList;
-        this.groundMap = groundMap;
-        this.questWidth = questWidth;
-        this.questHeight= questHeight;
-    }
+    private List<Adventurer> adventurerList;
+    private ConcurrentMap<Pair<Long, Long>, Ground> groundMap;
+    private long questWidth;
+    private long questHeight;
 
     public List<Adventurer> getAdventurerList() {
         return adventurerList;
@@ -43,5 +34,21 @@ public class Quest {
 
     public long getQuestHeight() {
         return questHeight;
+    }
+
+    public void setGroundMap(ConcurrentMap<Pair<Long, Long>, Ground> groundMap) {
+        this.groundMap = groundMap;
+    }
+
+    public void setAdventurerList(List<Adventurer> adventurerList) {
+        this.adventurerList = adventurerList;
+    }
+
+    public void setQuestWidth(long questWidth) {
+        this.questWidth = questWidth;
+    }
+
+    public void setQuestHeight(long questHeight) {
+        this.questHeight = questHeight;
     }
 }
