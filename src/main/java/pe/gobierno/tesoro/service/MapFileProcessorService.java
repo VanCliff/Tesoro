@@ -1,4 +1,4 @@
-package pe.gobierno.tesoro.service.file;
+package pe.gobierno.tesoro.service;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;

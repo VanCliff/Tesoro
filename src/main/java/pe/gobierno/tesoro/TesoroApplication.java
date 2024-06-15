@@ -4,7 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import pe.gobierno.tesoro.model.Quest;
-import pe.gobierno.tesoro.service.file.MapFileProcessorService;
+import pe.gobierno.tesoro.service.MapFileProcessorService;
 import pe.gobierno.tesoro.service.QuestSimulationService;
 import pe.gobierno.tesoro.service.SimulationResultProcessorService;
 
