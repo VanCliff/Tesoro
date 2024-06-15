@@ -32,13 +32,13 @@ public class MapFileProcessorService {
      */
     private static final List<Character> listMovement = Arrays.asList('A', 'G', 'D');
 
-
     private MapFileProcessorService() {}
 
     /***
      * This method will read the input arguments, parse the map file and create the quest.
      *
      * @param args Input parameters
+     *
      * @return A {@link Quest} initialized or not
      */
     public static Optional<Quest> readFile(String[] args) throws IOException {
@@ -54,13 +54,14 @@ public class MapFileProcessorService {
     /***
      * This method will handle (parse & validate) the map file
      *
-     * @param filePath the file path
-     * @throws IOException IOException
+     * @param filePath      the file path
+     * @throws IOException  IOException
      */
     private static Optional<Quest> handleFile(String filePath) throws IOException {
         List<String> listMountainLines  = new ArrayList<>();
         List<String> listTreasureLines  = new ArrayList<>();
         List<String> listAdventurerLines = new ArrayList<>();
+
         String mapLine = parseFile(filePath, listTreasureLines, listMountainLines, listAdventurerLines);
         return validateFile(mapLine, listTreasureLines, listMountainLines, listAdventurerLines);
 
@@ -69,13 +70,13 @@ public class MapFileProcessorService {
     /***
      * This method will parse the map file, it will take every useful data
      *
-     * @param filePath the file path
-     * @param listTreasureLines every treasure lines
-     * @param listMountainLines every mountain lines
-     * @param listAdventurerLines every adventurer line
-     * @throws IOException IOException
+     * @param filePath              the file path
+     * @param listTreasureLines     every treasure lines
+     * @param listMountainLines     every mountain lines
+     * @param listAdventurerLines   every adventurer line
+     * @throws IOException          IOException
      *
-     * @return mapLine
+     * @return the line corresponding to the map
      */
     private static String parseFile(String filePath, List<String> listTreasureLines, List<String> listMountainLines, List<String> listAdventurerLines) throws IOException {
         String mapLine = "";
@@ -138,8 +139,8 @@ public class MapFileProcessorService {
     /***
      * Validate the map line
      *
-     * @param mapLine the map line
-     * @param quest the Quest
+     * @param mapLine   the map line
+     * @param quest     the Quest
      */
     private static void validateMapInfo(String mapLine, Quest quest) {
         String[] mapInfo = mapLine.replace(" ", "").split("-");
@@ -179,7 +180,6 @@ public class MapFileProcessorService {
      * @param listAdventurerLines the list of adventurer lines
      * @param quest the Quest
      */
-
     private static void validateAdventurerInfo(List<String> listAdventurerLines, Quest quest) {
         int index = 0;
 
@@ -300,6 +300,10 @@ public class MapFileProcessorService {
 
         var groundMap = quest.getGroundMap();
 
+        var adventurerPositions = quest.getAdventurerList().stream()
+                .map(adventurer -> Pair.of(adventurer.getPosX(), adventurer.getPosY()))
+                .collect(Collectors.toSet());
+
         for (var mountainLine : listMountainLines) {
 
             String[] treasureInfo = mountainLine.split("-");
@@ -322,7 +326,7 @@ public class MapFileProcessorService {
             if ((mountainAbscissa >= 0 && mountainAbscissa < quest.getQuestWidth())
                     && mountainOrdinate >= 0 && mountainOrdinate < quest.getQuestHeight()) {
 
-                if(checkIsAdventurerPresent(mountainAbscissa, mountainOrdinate, quest)) {
+                if(checkIsAdventurerPresent(mountainAbscissa, mountainOrdinate, adventurerPositions)) {
                     LOGGER.log(Level.SEVERE, "Adventurer and mountain share same position");
                     quest.setValid(false);
                 }
@@ -339,17 +343,16 @@ public class MapFileProcessorService {
     }
 
     /**
+     * Check if an adventurer is present at specific position
      *
-     * @param posX
-     * @param posY
-     * @param quest
-     * @return
+     * @param posX posX
+     * @param posY posY
+     * @param adventurerPositions the collection of every adventurer's position
+     *
+     * @return true if present false otherwise
      */
-    private static boolean checkIsAdventurerPresent(long posX, long posY, Quest quest) {
-        List<Adventurer> adventurerList = quest.getAdventurerList();
-        Set<Pair<Long, Long>> adventurerPositions = adventurerList.stream()
-                .map(adventurer -> Pair.of(adventurer.getPosX(), adventurer.getPosY())).collect(Collectors.toSet());
-
+    private static boolean checkIsAdventurerPresent(long posX, long posY, Set<Pair<Long, Long>> adventurerPositions) {
+        //noinspection SuspiciousNameCombination
         return adventurerPositions.contains(Pair.of(posX, posY));
 
     }

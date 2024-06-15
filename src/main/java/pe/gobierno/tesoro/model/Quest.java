@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentMap;
  * - the list of adventurers
  * - the location of every mountain, treasures & adventurers
  * - the size of the quest (i.e. the width/height)
+ * - if the quest's data is valid
  */
 public class Quest {
     private List<Adventurer> adventurerList = new ArrayList<>();
