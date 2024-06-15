@@ -1,5 +1,7 @@
 package pe.gobierno.tesoro.model;
 
+import java.util.List;
+
 /***
  * Representation of the adventurer
  */
@@ -10,15 +12,11 @@ public class Adventurer {
     private long posY;
     private char orientation;
     private long treasure;
-    private String movementSequence;
+    private List<Character> movementSequence;
 
-    public Adventurer(long id, String name, long posX, long posY, String movementSequence, char orientation) {
+    public Adventurer(long id, String name) {
         this.id = id;
         this.name = name;
-        this.posX = posX;
-        this.posY = posY;
-        this.movementSequence = movementSequence;
-        this.orientation = orientation;
     }
 
     public long getId() {
@@ -61,11 +59,11 @@ public class Adventurer {
         this.treasure = treasure;
     }
 
-    public String getMovementSequence() {
+    public List<Character> getMovementSequence() {
         return movementSequence;
     }
 
-    public void setMovementSequence(String movementSequence) {
+    public void setMovementSequence(List<Character> movementSequence) {
         this.movementSequence = movementSequence;
     }
 

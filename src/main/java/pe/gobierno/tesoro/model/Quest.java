@@ -2,8 +2,10 @@ package pe.gobierno.tesoro.model;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /***
@@ -15,10 +17,11 @@ import java.util.concurrent.ConcurrentMap;
  * - the size of the quest (i.e. the width/height)
  */
 public class Quest {
-    private List<Adventurer> adventurerList;
-    private ConcurrentMap<Pair<Long, Long>, Ground> groundMap;
+    private List<Adventurer> adventurerList = new ArrayList<>();
+    private ConcurrentMap<Pair<Long, Long>, Ground> groundMap = new ConcurrentHashMap<>();
     private long questWidth;
     private long questHeight;
+    private boolean isValid = true;
 
     public List<Adventurer> getAdventurerList() {
         return adventurerList;
@@ -50,5 +53,13 @@ public class Quest {
 
     public void setQuestHeight(long questHeight) {
         this.questHeight = questHeight;
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
     }
 }
