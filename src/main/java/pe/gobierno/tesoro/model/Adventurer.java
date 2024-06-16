@@ -10,7 +10,7 @@ public class Adventurer {
     private final String name;
     private long posX;
     private long posY;
-    private char orientation;
+    private CardinalPointsType orientation;
     private long treasure;
     private List<Character> movementSequence;
 
@@ -43,11 +43,11 @@ public class Adventurer {
         this.posY = posY;
     }
 
-    public char getOrientation() {
+    public CardinalPointsType getOrientation() {
         return orientation;
     }
 
-    public void setOrientation(char orientation) {
+    public void setOrientation(CardinalPointsType orientation) {
         this.orientation = orientation;
     }
 

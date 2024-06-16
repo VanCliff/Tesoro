@@ -19,12 +19,13 @@ public class TesoroApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Optional<Quest> quest = MapFileProcessorService.readFile(args);
+		Optional<Quest> optionalQuest = MapFileProcessorService.readFile(args);
 
-		if(quest.isPresent()) {
-			QuestSimulationService.execute();
-			SimulationResultProcessorService.writeFile();
+		if(optionalQuest.isPresent()) {
+			QuestSimulationService.execute(optionalQuest.get());
+			SimulationResultProcessorService.writeFile(optionalQuest.get());
 		}
+
 	}
 
 }

@@ -3,10 +3,9 @@ package pe.gobierno.tesoro.model;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /***
  * This class implements all business logic.
@@ -19,7 +18,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class Quest {
     private List<Adventurer> adventurerList = new ArrayList<>();
-    private ConcurrentMap<Pair<Long, Long>, Ground> groundMap = new ConcurrentHashMap<>();
+    private Map<Pair<Long, Long>, Ground> groundMap = new HashMap<>();
     private long questWidth;
     private long questHeight;
     private boolean isValid = true;
@@ -40,7 +39,7 @@ public class Quest {
         return questHeight;
     }
 
-    public void setGroundMap(ConcurrentMap<Pair<Long, Long>, Ground> groundMap) {
+    public void setGroundMap(HashMap<Pair<Long, Long>, Ground> groundMap) {
         this.groundMap = groundMap;
     }
 

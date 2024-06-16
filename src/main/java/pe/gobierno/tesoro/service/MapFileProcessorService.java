@@ -2,10 +2,7 @@ package pe.gobierno.tesoro.service;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
-import pe.gobierno.tesoro.model.Adventurer;
-import pe.gobierno.tesoro.model.Ground;
-import pe.gobierno.tesoro.model.GroundType;
-import pe.gobierno.tesoro.model.Quest;
+import pe.gobierno.tesoro.model.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -183,9 +180,9 @@ public class MapFileProcessorService {
     private static void validateAdventurerInfo(List<String> listAdventurerLines, Quest quest) {
         int index = 0;
 
-        for (var adventurerLine : listAdventurerLines) {
-            LOGGER.info(adventurerLine);
+        var adventurerPositions = new HashSet<Pair<Long, Long>>();
 
+        for (var adventurerLine : listAdventurerLines) {
             String[] adventurerInfo = adventurerLine.split("-");
             String movementSequence;
             long adventurerAbscissa = -1;
@@ -212,15 +209,20 @@ public class MapFileProcessorService {
             if ((adventurerAbscissa >= 0 && adventurerAbscissa < quest.getQuestWidth())
                     && adventurerOrdinate >= 0 && adventurerOrdinate < quest.getQuestHeight()) {
 
-                adventurer.setPosX(adventurerAbscissa);
-                adventurer.setPosY(adventurerOrdinate);
+                if (checkIsAdventurerPresent(adventurerAbscissa, adventurerOrdinate, adventurerPositions)) {
+                    LOGGER.log(Level.SEVERE, "Adventurers share same position");
+                    quest.setValid(false);
+                } else {
+                    adventurer.setPosX(adventurerAbscissa);
+                    adventurer.setPosY(adventurerOrdinate);
+                }
             } else {
                 LOGGER.log(Level.SEVERE, "Adventurer's position are out of map");
                 quest.setValid(false);
             }
 
             if (listOrientation.contains(adventurerInfo[4])) {
-                adventurer.setOrientation(adventurerInfo[4].charAt(0));
+                adventurer.setOrientation(CardinalPointsType.valueOf(String.valueOf(adventurerInfo[4].charAt(0))));
             } else {
                 LOGGER.log(Level.SEVERE, "Invalid orientation");
                 quest.setValid(false);
@@ -237,6 +239,7 @@ public class MapFileProcessorService {
                 adventurer.setMovementSequence(movementSequenceSupplier.get().collect(Collectors.toCollection(LinkedList::new)));
             }
 
+            adventurerPositions.add(Pair.of(adventurer.getPosX(), adventurer.getPosY()));
             quest.getAdventurerList().add(adventurer);
             index++;
         }
