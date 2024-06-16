@@ -6,7 +6,6 @@ import java.util.List;
  * Representation of the adventurer
  */
 public class Adventurer {
-    private final long id;
     private final String name;
     private long posX;
     private long posY;
@@ -14,13 +13,8 @@ public class Adventurer {
     private long treasure;
     private List<Character> movementSequence;
 
-    public Adventurer(long id, String name) {
-        this.id = id;
+    public Adventurer(String name) {
         this.name = name;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getName() {
@@ -67,16 +61,4 @@ public class Adventurer {
         this.movementSequence = movementSequence;
     }
 
-    @Override
-    public String toString() {
-        return "Adventurer {" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", posX=" + posX +
-                ", posY=" + posY +
-                ", orientation=" + orientation +
-                ", treasure=" + treasure +
-                ", movementSequence='" + movementSequence + '\'' +
-                '}';
-    }
 }

@@ -15,6 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class SimulationResultProcessorService {
@@ -24,6 +26,8 @@ public class SimulationResultProcessorService {
     private static final String TREASURE_SEPARATOR = "T - ";
     private static final String ADVENTURER_SEPARATOR = "A - ";
     private static final String SEPARATOR = " - ";
+
+    private static final Logger LOGGER = Logger.getLogger(SimulationResultProcessorService.class.getName());
 
     private SimulationResultProcessorService() {}
 
@@ -84,22 +88,22 @@ public class SimulationResultProcessorService {
                         .append(SEPARATOR).append(adventurer.getTreasure()).append(System.lineSeparator())
         );
 
-        String fileName = "src/test/resources/result.txt";
+        String fileName = "src/main/resources/result.txt";
 
         try (RandomAccessFile writer = new RandomAccessFile(fileName, "rw");
              FileChannel channel = writer.getChannel()) {
 
-            ByteBuffer buffer = ByteBuffer.wrap(mapLine.getBytes(StandardCharsets.UTF_8));
-            channel.write(buffer);
+            List<String> listResultString = List.of(mapLine, mountainLines.toString(), treasureLines.toString(),
+                    adventurerLines.toString());
 
-            buffer = ByteBuffer.wrap(mountainLines.toString().getBytes(StandardCharsets.UTF_8));
-            channel.write(buffer);
+            for (String element : listResultString) {
+                ByteBuffer buffer = ByteBuffer.wrap(element.getBytes(StandardCharsets.UTF_8));
 
-            buffer = ByteBuffer.wrap(treasureLines.toString().getBytes(StandardCharsets.UTF_8));
-            channel.write(buffer);
+                if (channel.write(buffer) == -1) {
+                    LOGGER.log(Level.SEVERE, () -> "Error occurred while writing to the file : " + element);
+                }
+            }
 
-            buffer = ByteBuffer.wrap(adventurerLines.toString().getBytes(StandardCharsets.UTF_8));
-            channel.write(buffer);
         }
     }
 }

@@ -178,8 +178,6 @@ public class MapFileProcessorService {
      * @param quest the Quest
      */
     private static void validateAdventurerInfo(List<String> listAdventurerLines, Quest quest) {
-        int index = 0;
-
         var adventurerPositions = new HashSet<Pair<Long, Long>>();
 
         for (var adventurerLine : listAdventurerLines) {
@@ -196,7 +194,7 @@ public class MapFileProcessorService {
 
             name = adventurerInfo[1];
 
-            Adventurer adventurer = new Adventurer(index, name);
+            Adventurer adventurer = new Adventurer(name);
 
             try {
                 adventurerAbscissa = Long.parseLong(adventurerInfo[2]);
@@ -241,7 +239,6 @@ public class MapFileProcessorService {
 
             adventurerPositions.add(Pair.of(adventurer.getPosX(), adventurer.getPosY()));
             quest.getAdventurerList().add(adventurer);
-            index++;
         }
     }
 

@@ -2,7 +2,11 @@ package pe.gobierno.tesoro.service;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
-import pe.gobierno.tesoro.model.*;
+import pe.gobierno.tesoro.model.Adventurer;
+import pe.gobierno.tesoro.model.Quest;
+import pe.gobierno.tesoro.model.Ground;
+import pe.gobierno.tesoro.model.GroundType;
+import pe.gobierno.tesoro.model.CardinalPointsType;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -67,6 +71,7 @@ public class QuestSimulationService {
             case GroundType.TREASURE -> {
                 if (ground.getNumberOfTreasure() > 0) {
                     ground.setNumberOfTreasure(ground.getNumberOfTreasure() - 1);
+                    ground.setAdventurerPresent(true);
                     adventurer.setTreasure(adventurer.getTreasure() + 1);
                 }
                 return true;

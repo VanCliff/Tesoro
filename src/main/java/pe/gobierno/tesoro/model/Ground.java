@@ -37,4 +37,5 @@ public class Ground {
     public void setAdventurerPresent(boolean adventurerPresent) {
         isAdventurerPresent = adventurerPresent;
     }
+
 }
