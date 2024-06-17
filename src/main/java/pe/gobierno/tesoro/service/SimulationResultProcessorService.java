@@ -52,6 +52,11 @@ public class SimulationResultProcessorService {
         StringBuilder adventurerLines = new StringBuilder();
         String mapLine = MAP_SEPARATOR + quest.getQuestWidth() + SEPARATOR + quest.getQuestHeight() + System.lineSeparator();
 
+        treasureLines.append("# {T comme Trésor} - {Axe horizontal} - {Axe vertical} - {Nb. de trésors restants}").append(System.lineSeparator());
+        adventurerLines.append("# {A comme Aventurier} - {Nom de l’aventurier} - {Axe horizontal} - {Axe vertical} - {Orientation} - {Nb. trésors ramassés}").append(System.lineSeparator());
+
+
+
         for (var entry : quest.getGroundMap().entrySet()) {
             Pair<Long, Long> key = entry.getKey();
             Ground ground = entry.getValue();
