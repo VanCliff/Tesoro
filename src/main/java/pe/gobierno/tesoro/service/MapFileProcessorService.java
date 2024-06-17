@@ -165,6 +165,7 @@ public class MapFileProcessorService {
         if (mapInfo.length < 2) {
             LOGGER.log(Level.SEVERE, "Map dimension are not available");
             quest.setValid(false);
+            return;
         }
 
         try {
@@ -210,6 +211,7 @@ public class MapFileProcessorService {
             if (adventurerInfo.length < 5) {
                 LOGGER.log(Level.SEVERE, "Adventurer information are not available");
                 quest.setValid(false);
+                return;
             }
 
             name = adventurerInfo[1];
@@ -284,6 +286,7 @@ public class MapFileProcessorService {
             if (treasureInfo.length < 3) {
                 LOGGER.log(Level.SEVERE, "Treasure information are not available");
                 quest.setValid(false);
+                return;
             }
 
             try {
@@ -336,6 +339,7 @@ public class MapFileProcessorService {
             if (treasureInfo.length < 2) {
                 LOGGER.log(Level.SEVERE, "Mountain information are not available");
                 quest.setValid(false);
+                return;
             }
 
             try {

@@ -1,0 +1,2 @@
+# {C comme Carte} - {Nb. de case en largeur} - {Nb. de case en hauteur}
+C - 4 - 4

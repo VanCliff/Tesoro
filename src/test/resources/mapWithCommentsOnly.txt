@@ -1,0 +1,4 @@
+# {C comme Carte} - {Nb. de case en largeur} - {Nb. de case en hauteur}
+# {M comme Montagne} - {Axe horizontal} - {Axe vertical}
+# {T comme Trésor} - {Axe horizontal} - {Axe vertical} - {Nb. de trésors}
+# {A comme Aventurier} - {Nom de l’aventurier} - {Axe horizontal} - {Axe vertical} - {Orientation} - {Séquence de mouvement}
