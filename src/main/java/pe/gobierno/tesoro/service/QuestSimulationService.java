@@ -28,16 +28,24 @@ public class QuestSimulationService {
 
     private QuestSimulationService() {}
 
+    /**
+     * //TODO
+     * @param quest
+     */
     public static void execute(Quest quest) {
+        LOGGER.info("Quest begin !");
 
-        Optional<Adventurer> adventurerWithLongestMovementSequence = quest.getAdventurerList().stream().max(Comparator.comparingInt(a -> a.getMovementSequence().size()));
+        Optional<Adventurer> adventurerWithLongestMovementSequence = quest.getAdventurerList().stream()
+                .max(Comparator.comparingInt(a -> a.getMovementSequence().size()));
 
-        if(adventurerWithLongestMovementSequence.isEmpty()) {
+        if (adventurerWithLongestMovementSequence.isEmpty()) {
             return;
         }
 
+        // While an adventurer still have movements
         while (!adventurerWithLongestMovementSequence.get().getMovementSequence().isEmpty()) {
             for (var adventurer : quest.getAdventurerList()) {
+                // Get every adventurer current position for collision when they will move
                 Set<Pair<Long, Long>> adventurersPositions = quest.getAdventurerList().parallelStream()
                         .map(adv -> Pair.of(adv.getPosX(), adv.getPosY())).collect(Collectors.toSet());
 
@@ -53,11 +61,12 @@ public class QuestSimulationService {
                     case TURN_RIGHT -> adventurer.setOrientation(orientation.turnRight());
                     case FORWARD -> {
                         var currentPosition = Pair.of(adventurer.getPosX(), adventurer.getPosY());
-                        Pair<Long, Long> nextPosition = getNextPosition(Pair.of(adventurer.getPosX(),
-                                        adventurer.getPosY()), adventurer.getOrientation());
+                        var nextPosition = getNextPosition(currentPosition, adventurer.getOrientation());
 
                         if (shouldGoToNextGround(adventurersPositions, quest.getGroundMap(), nextPosition, adventurer)) {
-                            if(quest.getGroundMap().get(currentPosition) != null) {
+                            // If the adventurer move and was on a treasure previously, the treasure ground don't have
+                            // an adventurer anymore
+                            if (quest.getGroundMap().get(currentPosition) != null) {
                                 quest.getGroundMap().get(currentPosition).setAdventurerPresent(false);
                             }
 
@@ -67,16 +76,25 @@ public class QuestSimulationService {
                     }
                     default -> {/* nothing */}
                 }
-
+                LOGGER.info(adventurer.getName() + " moved !");
                 adventurer.getMovementSequence().removeFirst();
             }
         }
+        LOGGER.info("Quest ended ! Time to count treasures");
     }
 
+    /**
+     * //TODO
+     * @param adventurersPositions
+     * @param groundMap
+     * @param nextPosition
+     * @param adventurer
+     * @return
+     */
     private static boolean shouldGoToNextGround(Set<Pair<Long, Long>> adventurersPositions, Map<Pair<Long, Long>, Ground> groundMap,
                                                 Pair<Long, Long> nextPosition, Adventurer adventurer) {
 
-        if(!adventurersPositions.add(nextPosition)) {
+        if (!adventurersPositions.add(nextPosition)) {
             return false;
         }
 
@@ -103,6 +121,12 @@ public class QuestSimulationService {
         }
     }
 
+    /**
+     * //TODO
+     * @param currentPosition
+     * @param orientation
+     * @return
+     */
     private static Pair<Long, Long> getNextPosition(Pair<Long, Long> currentPosition, CardinalPointsType orientation) {
 
         switch (orientation) {

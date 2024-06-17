@@ -31,8 +31,15 @@ public class SimulationResultProcessorService {
 
     private SimulationResultProcessorService() {}
 
+    /**
+     * //TODO
+     * @param quest
+     * @throws IOException
+     */
     @SuppressWarnings("squid:S1612")
     public static void writeFile(Quest quest) throws IOException {
+        LOGGER.info("Creating result file");
+
         StringBuilder mountainLines = new StringBuilder();
         StringBuilder treasureLines = new StringBuilder();
         StringBuilder adventurerLines = new StringBuilder();
@@ -46,7 +53,6 @@ public class SimulationResultProcessorService {
                 quest.getGroundMap().remove(key);
             }
         }
-
 
         List<Pair<Long, Long>> sortedGroundPositions = new ArrayList<>(quest.getGroundMap().keySet());
 
@@ -75,10 +81,7 @@ public class SimulationResultProcessorService {
         }
 
         var sortedAdventurerList = quest.getAdventurerList().stream()
-                .sorted(Comparator
-                        .comparing(Adventurer::getPosX)
-                        .thenComparing(Adventurer::getPosY))
-                .toList();
+                .sorted(Comparator.comparing(Adventurer::getPosX).thenComparing(Adventurer::getPosY)).toList();
 
         sortedAdventurerList.forEach(adventurer ->
                 adventurerLines.append(ADVENTURER_SEPARATOR).append(adventurer.getName())
@@ -101,9 +104,10 @@ public class SimulationResultProcessorService {
 
                 if (channel.write(buffer) == -1) {
                     LOGGER.log(Level.SEVERE, () -> "Error occurred while writing to the file : " + element);
+                    return;
                 }
             }
-
         }
+        LOGGER.info(() -> fileName + " created !");
     }
 }

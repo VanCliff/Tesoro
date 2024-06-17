@@ -2,12 +2,22 @@ package pe.gobierno.tesoro.service;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
-import pe.gobierno.tesoro.model.*;
+import pe.gobierno.tesoro.model.Quest;
+import pe.gobierno.tesoro.model.Adventurer;
+import pe.gobierno.tesoro.model.CardinalPointsType;
+import pe.gobierno.tesoro.model.GroundType;
+import pe.gobierno.tesoro.model.Ground;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.LinkedList;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,6 +86,8 @@ public class MapFileProcessorService {
      * @return the line corresponding to the map
      */
     private static String parseFile(String filePath, List<String> listTreasureLines, List<String> listMountainLines, List<String> listAdventurerLines) throws IOException {
+        LOGGER.info("File is being parsed");
+
         String mapLine = "";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -119,6 +131,8 @@ public class MapFileProcessorService {
     private static Optional<Quest> validateFile(String mapLine, List<String> listTreasureLines, List<String> listMountainLines,
                                                 List<String> listAdventurerLines) {
 
+        LOGGER.info("File is being validated");
+
         Quest quest = new Quest();
 
         validateMapInfo(mapLine, quest);
@@ -127,9 +141,11 @@ public class MapFileProcessorService {
         validateTreasureInfo(listTreasureLines, quest);
 
         if (quest.isValid()) {
+            LOGGER.info("File is valid");
             return Optional.of(quest);
         }
 
+        LOGGER.info("File is invalid");
         return Optional.empty();
     }
 
@@ -140,11 +156,13 @@ public class MapFileProcessorService {
      * @param quest     the Quest
      */
     private static void validateMapInfo(String mapLine, Quest quest) {
+        LOGGER.info("Validating map's data");
+
         String[] mapInfo = mapLine.replace(" ", "").split("-");
         long questWidth = -1;
         long questHeight = -1;
 
-        if(mapInfo.length < 2) {
+        if (mapInfo.length < 2) {
             LOGGER.log(Level.SEVERE, "Map dimension are not available");
             quest.setValid(false);
         }
@@ -157,15 +175,15 @@ public class MapFileProcessorService {
             quest.setValid(false);
         }
 
-        if(questWidth > 0 && questWidth != questHeight) {
+        if (questWidth > 0 && questWidth != questHeight) {
             quest.setQuestWidth(questWidth);
         }
 
-        if(questHeight > 0 && questWidth != questHeight) {
+        if (questHeight > 0 && questWidth != questHeight) {
             quest.setQuestHeight(questHeight);
         }
 
-        if(quest.getQuestHeight() == 0L || quest.getQuestWidth() == 0L) {
+        if (quest.getQuestHeight() == 0L || quest.getQuestWidth() == 0L) {
             LOGGER.log(Level.SEVERE, "Map dimension are invalid (either negative/zero or form a square)");
             quest.setValid(false);
         }
@@ -178,13 +196,15 @@ public class MapFileProcessorService {
      * @param quest the Quest
      */
     private static void validateAdventurerInfo(List<String> listAdventurerLines, Quest quest) {
+        LOGGER.info("Validating adventurer's data");
+
         var adventurerPositions = new HashSet<Pair<Long, Long>>();
 
         for (var adventurerLine : listAdventurerLines) {
             String[] adventurerInfo = adventurerLine.split("-");
             String movementSequence;
-            long adventurerAbscissa = -1;
-            long adventurerOrdinate = -1;
+            long adventurerPosX = -1;
+            long adventurerPosY = -1;
             String name;
 
             if (adventurerInfo.length < 5) {
@@ -197,22 +217,22 @@ public class MapFileProcessorService {
             Adventurer adventurer = new Adventurer(name);
 
             try {
-                adventurerAbscissa = Long.parseLong(adventurerInfo[2]);
-                adventurerOrdinate = Long.parseLong(adventurerInfo[3]);
+                adventurerPosX = Long.parseLong(adventurerInfo[2]);
+                adventurerPosY = Long.parseLong(adventurerInfo[3]);
             } catch (NumberFormatException numberFormatException) {
                 LOGGER.log(Level.SEVERE, "Adventurer's position are not numeric");
                 quest.setValid(false);
             }
 
-            if ((adventurerAbscissa >= 0 && adventurerAbscissa < quest.getQuestWidth())
-                    && adventurerOrdinate >= 0 && adventurerOrdinate < quest.getQuestHeight()) {
+            if ((adventurerPosX >= 0 && adventurerPosX < quest.getQuestWidth())
+                    && adventurerPosY >= 0 && adventurerPosY < quest.getQuestHeight()) {
 
-                if (checkIsAdventurerPresent(adventurerAbscissa, adventurerOrdinate, adventurerPositions)) {
+                if (checkIsAdventurerPresent(adventurerPosX, adventurerPosY, adventurerPositions)) {
                     LOGGER.log(Level.SEVERE, "Adventurers share same position");
                     quest.setValid(false);
                 } else {
-                    adventurer.setPosX(adventurerAbscissa);
-                    adventurer.setPosY(adventurerOrdinate);
+                    adventurer.setPosX(adventurerPosX);
+                    adventurer.setPosY(adventurerPosY);
                 }
             } else {
                 LOGGER.log(Level.SEVERE, "Adventurer's position are out of map");
@@ -250,13 +270,15 @@ public class MapFileProcessorService {
      * @param quest the Quest
      */
     private static void validateTreasureInfo(List<String> listTreasureLines, Quest quest) {
+        LOGGER.info("Validating treasure's data");
+
         var groundMap = quest.getGroundMap();
 
         for (var treasureLine : listTreasureLines) {
 
             String[] treasureInfo = treasureLine.split("-");
-            long treasureAbscissa = -1;
-            long treasureOrdinate = -1;
+            long treasurePosX = -1;
+            long treasurePosY = -1;
             long treasureNumber = -1;
 
             if (treasureInfo.length < 3) {
@@ -265,23 +287,23 @@ public class MapFileProcessorService {
             }
 
             try {
-                treasureAbscissa = Long.parseLong(treasureInfo[1]);
-                treasureOrdinate = Long.parseLong(treasureInfo[2]);
+                treasurePosX = Long.parseLong(treasureInfo[1]);
+                treasurePosY = Long.parseLong(treasureInfo[2]);
                 treasureNumber   = Long.parseLong(treasureInfo[3]);
             } catch (NumberFormatException numberFormatException) {
                 LOGGER.log(Level.SEVERE, "Treasure info are not numeric");
                 quest.setValid(false);
             }
 
-            if ((treasureAbscissa >= 0 && treasureAbscissa < quest.getQuestWidth())
-                && treasureOrdinate >= 0 && treasureOrdinate < quest.getQuestHeight()
+            if ((treasurePosX >= 0 && treasurePosX < quest.getQuestWidth())
+                && treasurePosY >= 0 && treasurePosY < quest.getQuestHeight()
                 && treasureNumber >= 0 ) {
 
                 Ground ground = new Ground(GroundType.TREASURE, false, treasureNumber);
-                groundMap.putIfAbsent(Pair.of(treasureAbscissa, treasureOrdinate), ground);
+                groundMap.putIfAbsent(Pair.of(treasurePosX, treasurePosY), ground);
             }
 
-            if (groundMap.get(Pair.of(treasureAbscissa, treasureOrdinate)) == null) {
+            if (groundMap.get(Pair.of(treasurePosX, treasurePosY)) == null) {
                 LOGGER.log(Level.SEVERE, "Treasure info are invalid (either negative/zero)");
                 quest.setValid(false);
             }
@@ -297,6 +319,7 @@ public class MapFileProcessorService {
      * @param quest the Quest
      */
     private static void validateMountainInfo(List<String> listMountainLines, Quest quest) {
+        LOGGER.info("Validating mountain's data");
 
         var groundMap = quest.getGroundMap();
 
@@ -307,8 +330,8 @@ public class MapFileProcessorService {
         for (var mountainLine : listMountainLines) {
 
             String[] treasureInfo = mountainLine.split("-");
-            long mountainAbscissa = -1;
-            long mountainOrdinate = -1;
+            long mountainPosX = -1;
+            long mountainPosY = -1;
 
             if (treasureInfo.length < 2) {
                 LOGGER.log(Level.SEVERE, "Mountain information are not available");
@@ -316,26 +339,26 @@ public class MapFileProcessorService {
             }
 
             try {
-                mountainAbscissa = Long.parseLong(treasureInfo[1]);
-                mountainOrdinate = Long.parseLong(treasureInfo[2]);
+                mountainPosX = Long.parseLong(treasureInfo[1]);
+                mountainPosY = Long.parseLong(treasureInfo[2]);
             } catch (NumberFormatException numberFormatException) {
                 LOGGER.log(Level.SEVERE, "Mountain info are not numeric");
                 quest.setValid(false);
             }
 
-            if ((mountainAbscissa >= 0 && mountainAbscissa < quest.getQuestWidth())
-                    && mountainOrdinate >= 0 && mountainOrdinate < quest.getQuestHeight()) {
+            if ((mountainPosX >= 0 && mountainPosX < quest.getQuestWidth())
+                    && mountainPosY >= 0 && mountainPosY < quest.getQuestHeight()) {
 
-                if(checkIsAdventurerPresent(mountainAbscissa, mountainOrdinate, adventurerPositions)) {
+                if (checkIsAdventurerPresent(mountainPosX, mountainPosY, adventurerPositions)) {
                     LOGGER.log(Level.SEVERE, "Adventurer and mountain share same position");
                     quest.setValid(false);
                 }
 
                 Ground ground = new Ground(GroundType.MOUNTAIN,false);
-                groundMap.putIfAbsent(Pair.of(mountainAbscissa, mountainOrdinate), ground);
+                groundMap.putIfAbsent(Pair.of(mountainPosX, mountainPosY), ground);
             }
 
-            if (groundMap.get(Pair.of(mountainAbscissa, mountainOrdinate)) == null) {
+            if (groundMap.get(Pair.of(mountainPosX, mountainPosY)) == null) {
                 LOGGER.log(Level.SEVERE, "Treasure info are invalid (either negative/zero)");
                 quest.setValid(false);
             }
@@ -354,7 +377,6 @@ public class MapFileProcessorService {
     private static boolean checkIsAdventurerPresent(long posX, long posY, Set<Pair<Long, Long>> adventurerPositions) {
         //noinspection SuspiciousNameCombination
         return adventurerPositions.contains(Pair.of(posX, posY));
-
     }
 
     /***
@@ -372,6 +394,7 @@ public class MapFileProcessorService {
         Arrays.stream(args).skip(1)
                 .forEach(arg -> LOGGER.warning("Unrecognized argument : " + arg));
 
+        LOGGER.info(() -> "File will be read : " + args[0]);
         return Optional.of(args[0]);
     }
 }
