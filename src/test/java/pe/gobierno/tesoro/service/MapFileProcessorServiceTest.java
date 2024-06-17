@@ -59,12 +59,15 @@ class MapFileProcessorServiceTest {
         String mapKO2 = "src/test/resources/mapWithCommentsOnly.txt";
         String mapKO3 = "src/test/resources/squareMap.txt";
         String mapKO4 = "src/test/resources/mapLineNotNumeric.txt";
-        String mapKO5 = "src/test/resources/mapLineNotNumeric.txt";
+        String mapKO5 = "src/test/resources/invalidMapCollision.txt";
         String mapKO6 = "src/test/resources/onlyAdventurerLine.txt";
         String mapKO7 = "src/test/resources/onlyMountainLine.txt";
         String mapKO8 = "src/test/resources/onlyTreasureLine.txt";
         String mapK09 = "src/test/resources/adventurerOrientationKO.txt";
         String mapK10 = "src/test/resources/adventurerMovementSequenceKO.txt";
+        String mapK11 = "src/test/resources/invalidMapPosition1.txt";
+        String mapK12 = "src/test/resources/invalidMapPosition2.txt";
+        String mapK13 = "src/test/resources/invalidMapPosition3.txt";
 
 
 
@@ -79,8 +82,10 @@ class MapFileProcessorServiceTest {
                 Arguments.of(mapKO7, false),
                 Arguments.of(mapKO8, false),
                 Arguments.of(mapK09, false),
-                Arguments.of(mapK10, false)
-
+                Arguments.of(mapK10, false),
+                Arguments.of(mapK11, false),
+                Arguments.of(mapK12, false),
+                Arguments.of(mapK13, false)
         );
 
     }
