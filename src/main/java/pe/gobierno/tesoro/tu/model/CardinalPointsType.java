@@ -1,4 +1,4 @@
-package pe.gobierno.tesoro.model;
+package pe.gobierno.tesoro.tu.model;
 
 /***
  * Representation of the different cardinal points

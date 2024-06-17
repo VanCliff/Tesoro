@@ -1,10 +1,10 @@
-package pe.gobierno.tesoro.service;
+package pe.gobierno.tesoro.tu.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import pe.gobierno.tesoro.model.Quest;
+import pe.gobierno.tesoro.tu.model.Quest;
 
 import java.io.IOException;
 import java.util.Optional;

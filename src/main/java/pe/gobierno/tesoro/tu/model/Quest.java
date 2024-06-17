@@ -1,4 +1,4 @@
-package pe.gobierno.tesoro.model;
+package pe.gobierno.tesoro.tu.model;
 
 import org.apache.commons.lang3.tuple.Pair;
 

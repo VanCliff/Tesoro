@@ -1,12 +1,12 @@
-package pe.gobierno.tesoro;
+package pe.gobierno.tesoro.tu;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import pe.gobierno.tesoro.model.Quest;
-import pe.gobierno.tesoro.service.MapFileProcessorService;
-import pe.gobierno.tesoro.service.QuestSimulationService;
-import pe.gobierno.tesoro.service.SimulationResultProcessorService;
+import pe.gobierno.tesoro.tu.model.Quest;
+import pe.gobierno.tesoro.tu.service.MapFileProcessorService;
+import pe.gobierno.tesoro.tu.service.QuestSimulationService;
+import pe.gobierno.tesoro.tu.service.SimulationResultProcessorService;
 
 import java.util.Optional;
 
