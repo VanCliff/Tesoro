@@ -1,4 +1,4 @@
-package pe.gobierno.tesoro.tu.model;
+package pe.gobierno.tesoro.model;
 
 /***
  * Representation of the different ground's type possible

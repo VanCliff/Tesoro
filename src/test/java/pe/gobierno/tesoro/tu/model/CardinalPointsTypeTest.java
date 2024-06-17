@@ -1,6 +1,7 @@
 package pe.gobierno.tesoro.tu.model;
 
 import org.junit.jupiter.api.Test;
+import pe.gobierno.tesoro.model.CardinalPointsType;
 
 import static org.junit.jupiter.api.Assertions.*;
 

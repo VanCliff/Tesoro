@@ -1,4 +1,4 @@
-package pe.gobierno.tesoro.tu.model;
+package pe.gobierno.tesoro.model;
 
 import java.util.List;
 

@@ -1,12 +1,12 @@
-package pe.gobierno.tesoro.tu.service;
+package pe.gobierno.tesoro.service;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
-import pe.gobierno.tesoro.tu.model.Adventurer;
-import pe.gobierno.tesoro.tu.model.Quest;
-import pe.gobierno.tesoro.tu.model.Ground;
-import pe.gobierno.tesoro.tu.model.GroundType;
-import pe.gobierno.tesoro.tu.model.CardinalPointsType;
+import pe.gobierno.tesoro.model.Adventurer;
+import pe.gobierno.tesoro.model.Quest;
+import pe.gobierno.tesoro.model.Ground;
+import pe.gobierno.tesoro.model.GroundType;
+import pe.gobierno.tesoro.model.CardinalPointsType;
 
 import java.util.Comparator;
 import java.util.Map;
