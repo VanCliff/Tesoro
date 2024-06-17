@@ -29,9 +29,12 @@ public class QuestSimulationService {
     private QuestSimulationService() {}
 
     /**
-     * //TODO
-     * @param quest
+     * This method will execute the quest's logic
+     * It will process the movements of each adventurer until ALL movements are consumed.
+     *
+     * @param quest the quest
      */
+    @SuppressWarnings("java:S3776")
     public static void execute(Quest quest) {
         LOGGER.info("Quest begin !");
 
@@ -84,12 +87,16 @@ public class QuestSimulationService {
     }
 
     /**
-     * //TODO
-     * @param adventurersPositions
-     * @param groundMap
-     * @param nextPosition
-     * @param adventurer
-     * @return
+     * This method determines if an adventurer should move to the next ground position.
+     * <p>
+     * It checks whether the next position is already occupied by another adventurer or if the ground type at the next position
+     * prevents movement (i.e., a mountain). It also handles treasure collection by adventurers if the next position contains a treasure.
+     *
+     * @param adventurersPositions the set of current positions of all adventurers
+     * @param groundMap the map of ground positions
+     * @param nextPosition the next position for the adventurer
+     * @param adventurer the adventurer
+     * @return True if the adventurer can move to the next position, false otherwise
      */
     private static boolean shouldGoToNextGround(Set<Pair<Long, Long>> adventurersPositions, Map<Pair<Long, Long>, Ground> groundMap,
                                                 Pair<Long, Long> nextPosition, Adventurer adventurer) {
@@ -122,10 +129,11 @@ public class QuestSimulationService {
     }
 
     /**
-     * //TODO
-     * @param currentPosition
-     * @param orientation
-     * @return
+     * Calculates the next position based on the current position and the orientation.
+     *
+     * @param currentPosition currentPosition
+     * @param orientation orientation
+     * @return the next position
      */
     private static Pair<Long, Long> getNextPosition(Pair<Long, Long> currentPosition, CardinalPointsType orientation) {
 

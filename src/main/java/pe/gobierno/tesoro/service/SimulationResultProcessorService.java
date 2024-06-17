@@ -32,9 +32,16 @@ public class SimulationResultProcessorService {
     private SimulationResultProcessorService() {}
 
     /**
-     * //TODO
-     * @param quest
-     * @throws IOException
+     * Writes the results of the quest to a result file
+     *
+     * <p>This method create or overwrite a result file that contains the state of the map after the quest has been finished
+     * It includes the positions in this order of :
+     * - mountains
+     * - remaining treasures (still having treasure left)
+     * - final state of adventurers
+     *
+     * @param quest the quest
+     * @throws IOException IOException
      */
     @SuppressWarnings("squid:S1612")
     public static void writeFile(Quest quest) throws IOException {
