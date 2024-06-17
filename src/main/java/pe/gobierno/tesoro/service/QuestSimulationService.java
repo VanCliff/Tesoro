@@ -9,8 +9,11 @@ import pe.gobierno.tesoro.model.GroundType;
 import pe.gobierno.tesoro.model.CardinalPointsType;
 
 import java.util.Comparator;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestSimulationService {
@@ -27,7 +30,6 @@ public class QuestSimulationService {
 
     public static void execute(Quest quest) {
 
-        Ground plainGround = new Ground(GroundType.PLAIN, false);
         Optional<Adventurer> adventurerWithLongestMovementSequence = quest.getAdventurerList().stream().max(Comparator.comparingInt(a -> a.getMovementSequence().size()));
 
         if(adventurerWithLongestMovementSequence.isEmpty()) {
@@ -36,6 +38,9 @@ public class QuestSimulationService {
 
         while (!adventurerWithLongestMovementSequence.get().getMovementSequence().isEmpty()) {
             for (var adventurer : quest.getAdventurerList()) {
+                Set<Pair<Long, Long>> adventurersPositions = quest.getAdventurerList().parallelStream()
+                        .map(adv -> Pair.of(adv.getPosX(), adv.getPosY())).collect(Collectors.toSet());
+
                 if (adventurer.getMovementSequence().isEmpty()) {
                     continue;
                 }
@@ -47,10 +52,15 @@ public class QuestSimulationService {
                     case TURN_LEFT  -> adventurer.setOrientation(orientation.turnLeft());
                     case TURN_RIGHT -> adventurer.setOrientation(orientation.turnRight());
                     case FORWARD -> {
+                        var currentPosition = Pair.of(adventurer.getPosX(), adventurer.getPosY());
                         Pair<Long, Long> nextPosition = getNextPosition(Pair.of(adventurer.getPosX(),
                                         adventurer.getPosY()), adventurer.getOrientation());
 
-                        if (shouldGoToNextGround(quest.getGroundMap().getOrDefault(nextPosition, plainGround), adventurer)) {
+                        if (shouldGoToNextGround(adventurersPositions, quest.getGroundMap(), nextPosition, adventurer)) {
+                            if(quest.getGroundMap().get(currentPosition) != null) {
+                                quest.getGroundMap().get(currentPosition).setAdventurerPresent(false);
+                            }
+
                             adventurer.setPosX(nextPosition.getLeft());
                             adventurer.setPosY(nextPosition.getRight());
                         }
@@ -63,12 +73,23 @@ public class QuestSimulationService {
         }
     }
 
-    private static boolean shouldGoToNextGround(Ground ground, Adventurer adventurer) {
+    private static boolean shouldGoToNextGround(Set<Pair<Long, Long>> adventurersPositions, Map<Pair<Long, Long>, Ground> groundMap,
+                                                Pair<Long, Long> nextPosition, Adventurer adventurer) {
+
+        if(!adventurersPositions.add(nextPosition)) {
+            return false;
+        }
+
+        Ground plainGround = new Ground(GroundType.PLAIN, false);
+        Ground ground = groundMap.getOrDefault(nextPosition, plainGround);
         switch (ground.getType()) {
             case GroundType.MOUNTAIN -> {
                 return false;
             }
             case GroundType.TREASURE -> {
+                if (ground.isAdventurerPresent()) {
+                    return false;
+                }
                 if (ground.getNumberOfTreasure() > 0) {
                     ground.setNumberOfTreasure(ground.getNumberOfTreasure() - 1);
                     ground.setAdventurerPresent(true);

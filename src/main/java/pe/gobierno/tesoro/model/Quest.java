@@ -39,14 +39,6 @@ public class Quest {
         return questHeight;
     }
 
-    public void setGroundMap(HashMap<Pair<Long, Long>, Ground> groundMap) {
-        this.groundMap = groundMap;
-    }
-
-    public void setAdventurerList(List<Adventurer> adventurerList) {
-        this.adventurerList = adventurerList;
-    }
-
     public void setQuestWidth(long questWidth) {
         this.questWidth = questWidth;
     }
