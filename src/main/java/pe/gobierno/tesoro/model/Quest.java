@@ -17,8 +17,8 @@ import java.util.Map;
  * - if the quest's data is valid
  */
 public class Quest {
-    private List<Adventurer> adventurerList = new ArrayList<>();
-    private Map<Pair<Long, Long>, Ground> groundMap = new HashMap<>();
+    private final List<Adventurer> adventurerList = new ArrayList<>();
+    private final Map<Pair<Long, Long>, Ground> groundMap = new HashMap<>();
     private long questWidth;
     private long questHeight;
     private boolean isValid = true;
