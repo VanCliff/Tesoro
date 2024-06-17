@@ -69,8 +69,6 @@ class MapFileProcessorServiceTest {
         String mapK12 = "src/test/resources/invalidMapPosition2.txt";
         String mapK13 = "src/test/resources/invalidMapPosition3.txt";
 
-
-
         return Stream.of(Arguments.of(mapOK, true),
                 Arguments.of(mapKO, false),
                 Arguments.of(mapOK2, true),
