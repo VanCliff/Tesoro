@@ -301,11 +301,9 @@ public class MapFileProcessorService {
                 && treasureNumber >= 0 ) {
 
                 Ground ground = new Ground(GroundType.TREASURE, false, treasureNumber);
-                //noinspection SuspiciousNameCombination
                 groundMap.putIfAbsent(Pair.of(treasurePosX, treasurePosY), ground);
             }
 
-            //noinspection SuspiciousNameCombination
             if (groundMap.get(Pair.of(treasurePosX, treasurePosY)) == null) {
                 LOGGER.log(Level.SEVERE, "Treasure info are invalid (either negative/zero)");
                 quest.setValid(false);
@@ -359,11 +357,9 @@ public class MapFileProcessorService {
                 }
 
                 Ground ground = new Ground(GroundType.MOUNTAIN,false);
-                //noinspection SuspiciousNameCombination
                 groundMap.putIfAbsent(Pair.of(mountainPosX, mountainPosY), ground);
             }
 
-            //noinspection SuspiciousNameCombination
             if (groundMap.get(Pair.of(mountainPosX, mountainPosY)) == null) {
                 LOGGER.log(Level.SEVERE, "Treasure info are invalid (either negative/zero)");
                 quest.setValid(false);
@@ -381,7 +377,6 @@ public class MapFileProcessorService {
      * @return true if present false otherwise
      */
     private static boolean checkIsAdventurerPresent(long posX, long posY, Set<Pair<Long, Long>> adventurerPositions) {
-        //noinspection SuspiciousNameCombination
         return adventurerPositions.contains(Pair.of(posX, posY));
     }
 

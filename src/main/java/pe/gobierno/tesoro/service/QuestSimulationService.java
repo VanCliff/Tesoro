@@ -32,7 +32,6 @@ public class QuestSimulationService {
      *
      * @param quest the quest
      */
-    @SuppressWarnings("java:S3776")
     public static void execute(Quest quest) {
         LOGGER.info("Quest begin !");
 

@@ -41,7 +41,6 @@ public class SimulationResultProcessorService {
      * @param quest the quest
      * @throws IOException IOException
      */
-    @SuppressWarnings("squid:S1612")
     public static void writeFile(Quest quest) throws IOException {
         LOGGER.info("Creating result file");
 
