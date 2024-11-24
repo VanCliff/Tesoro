@@ -1,7 +1,6 @@
 package pe.gobierno.tesoro.service;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.stereotype.Service;
 import pe.gobierno.tesoro.model.Adventurer;
 import pe.gobierno.tesoro.model.Quest;
 import pe.gobierno.tesoro.model.Ground;
@@ -15,7 +14,6 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-@Service
 public class QuestSimulationService {
 
     private static final Logger LOGGER = Logger.getLogger(QuestSimulationService.class.getName());
@@ -108,10 +106,10 @@ public class QuestSimulationService {
         Ground plainGround = new Ground(GroundType.PLAIN, false);
         Ground ground = groundMap.getOrDefault(nextPosition, plainGround);
         switch (ground.getType()) {
-            case GroundType.MOUNTAIN -> {
+            case MOUNTAIN -> {
                 return false;
             }
-            case GroundType.TREASURE -> {
+            case TREASURE -> {
                 if (ground.isAdventurerPresent()) {
                     return false;
                 }
@@ -138,16 +136,16 @@ public class QuestSimulationService {
     private static Pair<Long, Long> getNextPosition(Pair<Long, Long> currentPosition, CardinalPointsType orientation) {
 
         switch (orientation) {
-            case CardinalPointsType.N -> {
+            case N -> {
                 return Pair.of(currentPosition.getLeft(), currentPosition.getRight() - 1);
             }
-            case CardinalPointsType.E -> {
+            case E -> {
                 return Pair.of(currentPosition.getLeft() + 1, currentPosition.getRight());
             }
-            case CardinalPointsType.S -> {
+            case S -> {
                 return Pair.of(currentPosition.getLeft(), currentPosition.getRight() + 1);
             }
-            case CardinalPointsType.O -> {
+            case O -> {
                 return Pair.of(currentPosition.getLeft() - 1, currentPosition.getRight());
             }
             default -> {

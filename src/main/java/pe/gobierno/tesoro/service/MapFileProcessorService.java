@@ -1,7 +1,6 @@
 package pe.gobierno.tesoro.service;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.stereotype.Service;
 import pe.gobierno.tesoro.model.Quest;
 import pe.gobierno.tesoro.model.Adventurer;
 import pe.gobierno.tesoro.model.CardinalPointsType;
@@ -24,7 +23,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Service
 public class MapFileProcessorService {
 
     private static final Logger LOGGER = Logger.getLogger(MapFileProcessorService.class.getName());

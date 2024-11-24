@@ -1,7 +1,6 @@
 package pe.gobierno.tesoro.service;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.stereotype.Service;
 import pe.gobierno.tesoro.model.Adventurer;
 import pe.gobierno.tesoro.model.Ground;
 import pe.gobierno.tesoro.model.GroundType;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Service
 public class SimulationResultProcessorService {
 
     private static final String MAP_SEPARATOR = "C - ";

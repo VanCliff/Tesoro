@@ -63,7 +63,7 @@ class MapFileProcessorServiceTest {
         String mapKO5 = "src/test/resources/invalidMapCollision.txt";
         String mapKO6 = "src/test/resources/onlyAdventurerLine.txt";
         String mapKO7 = "src/test/resources/onlyMountainLine.txt";
-        String mapKO8 = "src/test/resources/onlyTreasureLine.txt";
+        String mapKO8 = "src/test/resources/onlyTreasure    Line.txt";
         String mapK09 = "src/test/resources/adventurerOrientationKO.txt";
         String mapK10 = "src/test/resources/adventurerMovementSequenceKO.txt";
         String mapK11 = "src/test/resources/invalidMapPosition1.txt";
